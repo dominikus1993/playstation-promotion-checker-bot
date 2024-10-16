@@ -19,7 +19,7 @@ type Title = string
 type Link = string
 type GameID = string
 
-type XboxStoreGame struct {
+type PlaystationStoreGame struct {
 	ID       GameID
 	Title    Title
 	link     Link
@@ -37,7 +37,7 @@ func joinPath(uri string) (string, error) {
 	return url.JoinPath("https://www.microsoft.com/", uri) // TODO: use playsation store base path
 }
 
-func (g *XboxStoreGame) GetLink() (*url.URL, error) {
+func (g *PlaystationStoreGame) GetLink() (*url.URL, error) {
 
 	uri, err := joinPath(g.link)
 	if err != nil {
@@ -51,26 +51,26 @@ func (g *XboxStoreGame) GetLink() (*url.URL, error) {
 	return u, nil
 }
 
-func (g *XboxStoreGame) CalculatePromotionPercentage() float64 {
+func (g *PlaystationStoreGame) CalculatePromotionPercentage() float64 {
 	return 100 - (g.price / g.oldPrice * 100)
 }
 
-func (g *XboxStoreGame) FormatPromotionPercentage() string {
+func (g *PlaystationStoreGame) FormatPromotionPercentage() string {
 	percentage := 100 - (g.price / g.oldPrice * 100)
 	return formatPrice(percentage)
 }
 
-func (g *XboxStoreGame) FormatPrice() string {
+func (g *PlaystationStoreGame) FormatPrice() string {
 	return formatPrice(g.price)
 }
 
-func (g *XboxStoreGame) FormatOldPrice() string {
+func (g *PlaystationStoreGame) FormatOldPrice() string {
 	return formatPrice(g.oldPrice)
 }
 
-func NewXboxStoreGame(title Title, link Link, price PromotionPrice, oldPrice RegularPrice) XboxStoreGame {
+func NewXboxStoreGame(title Title, link Link, price PromotionPrice, oldPrice RegularPrice) PlaystationStoreGame {
 	id, _ := crypto.GenerateId(title)
-	return XboxStoreGame{
+	return PlaystationStoreGame{
 		ID:       id,
 		Title:    title,
 		link:     link,
@@ -79,7 +79,7 @@ func NewXboxStoreGame(title Title, link Link, price PromotionPrice, oldPrice Reg
 	}
 }
 
-func (g *XboxStoreGame) IsValidGame() bool {
+func (g *PlaystationStoreGame) IsValidGame() bool {
 	_, err := g.GetLink()
 	if err != nil {
 		return false
