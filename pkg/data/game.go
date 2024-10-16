@@ -68,7 +68,7 @@ func (g *PlaystationStoreGame) FormatOldPrice() string {
 	return formatPrice(g.oldPrice)
 }
 
-func NewXboxStoreGame(title Title, link Link, price PromotionPrice, oldPrice RegularPrice) PlaystationStoreGame {
+func NewPlaystationStoreGame(title Title, link Link, price PromotionPrice, oldPrice RegularPrice) PlaystationStoreGame {
 	id, _ := crypto.GenerateId(title)
 	return PlaystationStoreGame{
 		ID:       id,
