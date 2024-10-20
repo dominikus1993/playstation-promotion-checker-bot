@@ -9,7 +9,7 @@ import (
 	"github.com/dustin/go-humanize"
 )
 
-const baseMicrosoftPath = "https://www.microsoft.com/"
+const baseMicrosoftPath = "https://store.playstation.com/pl-pl/product/"
 
 var errUrlIsEmptyErr = errors.New("uri is empty")
 
@@ -34,7 +34,7 @@ func joinPath(uri string) (string, error) {
 	if strings.HasPrefix(uri, baseMicrosoftPath) {
 		return uri, nil
 	}
-	return url.JoinPath("https://www.microsoft.com/", uri) // TODO: use playsation store base path
+	return url.JoinPath("https://store.playstation.com/pl-pl/product/", uri) // TODO: use playsation store base path
 }
 
 func (g *PlaystationStoreGame) GetLink() (*url.URL, error) {
