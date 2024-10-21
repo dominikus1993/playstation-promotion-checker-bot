@@ -73,9 +73,6 @@ func (p *PlayStationStoreHtmlParser) parsePage(ctx context.Context, ch chan<- da
 				return
 			}
 			ch <- data.NewPlaystationStoreGame(title, link, price.promotionPrice, price.regularPrice)
-			fmt.Println(title)
-			fmt.Println(link)
-			fmt.Println(price)
 		})
 		fmt.Println("found game")
 	})
@@ -91,17 +88,23 @@ func (p *PlayStationStoreHtmlParser) parsePage(ctx context.Context, ch chan<- da
 }
 
 func getPriceElement(e *colly.HTMLElement) (*price, error) {
-	span := e.DOM.Find(".sr-only")
-	priceText := span.Text()
-	if len(priceText) == 0 {
-		return nil, fmt.Errorf("price element not found")
+	regularPrice, err := parsePrice(e.DOM.Find(".psw-c-t-2").Text())
+	if err != nil {
+		return nil, err
 	}
-	return parsePrice(priceText)
+	promotionPrice, err := parsePrice(e.DOM.Find(".psw-m-r-3").Text())
+	if err != nil {
+		return nil, err
+	}
+	return &price{
+		regularPrice:   regularPrice,
+		promotionPrice: promotionPrice,
+	}, nil
 }
 
-func parsePrice(txt string) (*price, error) {
+func parsePrice(txt string) (float64, error) {
 	if len(txt) == 0 {
-		return nil, fmt.Errorf("price is empty")
+		return 0.0, fmt.Errorf("price is empty")
 	}
 	// Zamiana przecinka na kropkę
 	txt = string(commaRegExp.ReplaceAll([]byte(txt), []byte(".")))
@@ -109,13 +112,8 @@ func parsePrice(txt string) (*price, error) {
 	priceStr := string(decimalRegExp.ReplaceAll([]byte(txt), emptySpace))
 	priceFloat, err := strconv.ParseFloat(strings.TrimSpace(priceStr), 64)
 	if err != nil {
-		return nil, err
+		return 0.0, err
 	}
 
-	price := &price{
-		regularPrice:   priceFloat,
-		promotionPrice: 0,
-	}
-
-	return price, nil
+	return priceFloat, nil
 }
