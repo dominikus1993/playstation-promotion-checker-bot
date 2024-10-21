@@ -5,11 +5,18 @@ import (
 	"fmt"
 	"log/slog"
 	"regexp"
+	"strconv"
+	"strings"
 
 	"github.com/dominikus1993/playstation-promotion-checker-bot/pkg/data"
 	"github.com/gocolly/colly/v2"
 	"golang.org/x/sync/errgroup"
 )
+
+type price struct {
+	regularPrice   float64
+	promotionPrice float64
+}
 
 var decimalRegExp = regexp.MustCompile(`[^0-9.,-]`)
 var emptySpace = []byte("")
@@ -56,8 +63,21 @@ func (p *PlayStationStoreHtmlParser) parseAllGames(ctx context.Context, ch chan<
 func (p *PlayStationStoreHtmlParser) parsePage(ctx context.Context, ch chan<- data.PlaystationStoreGame, page int) error {
 	url := getPageUrl(p.psnUrl, page)
 	collector := newCollyCollector()
-	collector.OnHTML("div.card", func(e *colly.HTMLElement) {
-
+	collector.OnHTML(".psw-grid-list", func(e *colly.HTMLElement) {
+		e.ForEach("li", func(i int, c *colly.HTMLElement) {
+			title := c.DOM.Find(".psw-t-body").Text()
+			link := c.DOM.Find("a").AttrOr("href", "")
+			price, err := getPriceElement(c)
+			if err != nil {
+				slog.ErrorContext(ctx, "error while parsing price", "error", err, "url", url)
+				return
+			}
+			ch <- data.NewPlaystationStoreGame(title, link, price.promotionPrice, price.regularPrice)
+			fmt.Println(title)
+			fmt.Println(link)
+			fmt.Println(price)
+		})
+		fmt.Println("found game")
 	})
 	collector.OnError(func(r *colly.Response, err error) {
 		slog.ErrorContext(ctx, "error while parsing page", "error", err, "url", url)
@@ -68,4 +88,34 @@ func (p *PlayStationStoreHtmlParser) parsePage(ctx context.Context, ch chan<- da
 	}
 	collector.Wait()
 	return nil
+}
+
+func getPriceElement(e *colly.HTMLElement) (*price, error) {
+	span := e.DOM.Find(".sr-only")
+	priceText := span.Text()
+	if len(priceText) == 0 {
+		return nil, fmt.Errorf("price element not found")
+	}
+	return parsePrice(priceText)
+}
+
+func parsePrice(txt string) (*price, error) {
+	if len(txt) == 0 {
+		return nil, fmt.Errorf("price is empty")
+	}
+	// Zamiana przecinka na kropkę
+	txt = string(commaRegExp.ReplaceAll([]byte(txt), []byte(".")))
+	// Usunięcie wszystkich znaków, które nie są cyframi, kropką ani minusem
+	priceStr := string(decimalRegExp.ReplaceAll([]byte(txt), emptySpace))
+	priceFloat, err := strconv.ParseFloat(strings.TrimSpace(priceStr), 64)
+	if err != nil {
+		return nil, err
+	}
+
+	price := &price{
+		regularPrice:   priceFloat,
+		promotionPrice: 0,
+	}
+
+	return price, nil
 }
