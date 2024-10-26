@@ -37,7 +37,7 @@ func NewPlayStationStoreHtmlParser(psnUrl string) *PlayStationStoreHtmlParser {
 }
 
 func (p *PlayStationStoreHtmlParser) Provide(ctx context.Context) <-chan data.PlaystationStoreGame {
-	ch := make(chan data.PlaystationStoreGame)
+	ch := make(chan data.PlaystationStoreGame, 50)
 	go func() {
 		defer close(ch)
 		p.parseAllGames(ctx, ch)
