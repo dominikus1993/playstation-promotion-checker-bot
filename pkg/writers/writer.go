@@ -20,7 +20,7 @@ func NewBroadcastPlaystationGameWriter(writers ...PlaystationGameWriter) *Broadc
 }
 
 func (writer *BroadcastPlaystationGameWriter) Write(ctx context.Context, games []data.PlaystationStoreGame) error {
-	var wg errgroup.Group
+	wg, ctx := errgroup.WithContext(ctx)
 	for _, notifier := range writer.writers {
 		not := notifier
 		wg.Go(func() error {
