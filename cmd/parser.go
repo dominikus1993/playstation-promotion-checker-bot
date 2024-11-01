@@ -23,7 +23,7 @@ func XboxGamePromotionParser(context *cli.Context) error {
 	webhooktoken := context.String("webhooktoken")
 	promotionPercentage := context.Float64("pricePromotionPercentage")
 	mongoConnection := context.String("mongo-connection")
-	client, err := mongodb.NewClient(context.Context, mongoConnection, "Games", "promotions")
+	client, err := mongodb.NewClient(context.Context, mongoConnection, "PlaystationGames", "promotions")
 	if err != nil {
 		return fmt.Errorf("%w, failed to create mongo connection", err)
 	}
