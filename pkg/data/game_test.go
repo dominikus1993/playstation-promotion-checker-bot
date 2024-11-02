@@ -63,20 +63,20 @@ func TestFormatPercentage(t *testing.T) {
 
 func TestGetLink(t *testing.T) {
 
-	link := "pl-pl/p/biomutant-mercenary-class/9pmf2h8q973f%3Fcid=msft_web_chart"
+	link := "/pl-pl/product/EP1004-CUSA00411_00-PREMIUMPACKOGGW1"
 	game := NewPlaystationStoreGame("", link, 10.0, 20.0)
 	subject, err := game.GetLink()
 
 	assert.NoError(t, err)
 
-	assert.Equal(t, "https://www.microsoft.com/pl-pl/p/biomutant-mercenary-class/9pmf2h8q973f%3Fcid=msft_web_chart", subject.String())
+	assert.Equal(t, "https://store.playstation.com/pl-pl/product/EP1004-CUSA00411_00-PREMIUMPACKOGGW1", subject.String())
 }
 
 func FuzzJoinPath(f *testing.F) {
 
 	f.Add("", "", true)
-	f.Add("pl-pl/p/biomutant-mercenary-class/9pmf2h8q973f%3Fcid=msft_web_chart", "https://www.microsoft.com/pl-pl/p/biomutant-mercenary-class/9pmf2h8q973f%3Fcid=msft_web_chart", false)
-	f.Add("https://www.microsoft.com/pl-pl/p/biomutant-mercenary-class/9pmf2h8q973f%3Fcid=msft_web_chart", "https://www.microsoft.com/pl-pl/p/biomutant-mercenary-class/9pmf2h8q973f%3Fcid=msft_web_chart", false)
+	f.Add("/pl-pl/product/EP1004-CUSA00411_00-PREMIUMPACKOGGW1", "https://store.playstation.com/pl-pl/product/EP1004-CUSA00411_00-PREMIUMPACKOGGW1", false)
+	f.Add("https://store.playstation.com/pl-pl/product/EP1004-CUSA00411_00-PREMIUMPACKOGGW1", "https://store.playstation.com/pl-pl/product/EP1004-CUSA00411_00-PREMIUMPACKOGGW1", false)
 	f.Fuzz(func(t *testing.T, url string, expectedUrl string, isError bool) {
 		result, err := joinPath(url)
 		assert.Equal(t, expectedUrl, result)
