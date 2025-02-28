@@ -11,7 +11,7 @@ import (
 )
 
 func TestParsingFirstPage(t *testing.T) {
-	parser := NewPlayStationStoreHtmlParser("https://store.playstation.com/pl-pl/category/83a687fe-bed7-448c-909f-310e74a71b39")
+	parser := NewPlayStationStoreHtmlParser("https://store.playstation.com/pl-pl/category/3f772501-f6f8-49b7-abac-874a88ca4897")
 	result := ParsePageChannel(parser, 1)
 	subject := gotolkit.ToSlice(result)
 	assert.NotNil(t, subject)

@@ -16,7 +16,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-const playstationStoreUrl = "https://store.playstation.com/pl-pl/category/83a687fe-bed7-448c-909f-310e74a71b39"
+const playstationStoreUrl = "https://store.playstation.com/pl-pl/category/3f772501-f6f8-49b7-abac-874a88ca4897"
 
 func XboxGamePromotionParser(context *cli.Context) error {
 	webhookId := context.String("webhookid")
