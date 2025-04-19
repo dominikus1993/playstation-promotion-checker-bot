@@ -1,16 +1,17 @@
 package main
 
 import (
+	"context"
 	"log"
 	"os"
 
 	"github.com/dominikus1993/playstation-promotion-checker-bot/cmd"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 	_ "go.uber.org/automaxprocs"
 )
 
 func main() {
-	app := &cli.App{
+	cmd := &cli.Command{
 		Name:  "xbox-promotion-bot",
 		Usage: "parse xbox game promotions",
 		Flags: []cli.Flag{
@@ -24,7 +25,7 @@ func main() {
 				Usage:    "discord webhhook id",
 				Required: true,
 			},
-			&cli.Float64Flag{
+			&cli.FloatFlag{
 				Name:     "pricePromotionPercentage",
 				Aliases:  []string{"ppp"},
 				Usage:    "minimum promotion percentage",
@@ -39,8 +40,8 @@ func main() {
 		},
 		Action: cmd.XboxGamePromotionParser,
 	}
-	err := app.Run(os.Args)
-	if err != nil {
+
+	if err := cmd.Run(context.Background(), os.Args); err != nil {
 		log.Fatal(err)
 	}
 }
