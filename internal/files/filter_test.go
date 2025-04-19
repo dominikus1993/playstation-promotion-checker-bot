@@ -32,7 +32,7 @@ func TestParsingWhenGamesAreInGamesThatIWantBuy(t *testing.T) {
 
 func TestParsingWhenGamesAreNotInGamesThatIWantBuy(t *testing.T) {
 	filter := TxtFileFilter{gamesThatIWantBuy: []string{"stellaris", "cyberpunk"}}
-	games := gotolkit.FromSlice([]data.PlaystationStoreGame{{Title: "Starfield"}, {Title: "Elden Ring"}, {Title: "Assasins Creed"}, {Title: "STORY OF SEASONS: Friends of Mineral Town - Digital Edition"}})
+	games := gotolkit.FromSlice([]data.PlaystationStoreGame{{Title: "Starfield"}, {Title: "Elden Ring"}, {Title: "DOOM Eternal Standard Edition"}, {Title: "Assasins Creed"}, {Title: "STORY OF SEASONS: Friends of Mineral Town - Digital Edition"}})
 	result := filter.Filter(context.TODO(), games)
 	got := gotolkit.ToSlice(result)
 
@@ -45,7 +45,7 @@ func BenchmarkParsingFirstPage(b *testing.B) {
 	filter := TxtFileFilter{gamesThatIWantBuy: []string{"stellaris", "cyberpunk"}}
 	games := gotolkit.FromSlice([]data.PlaystationStoreGame{{Title: "Cyberpunk 2077"}, {Title: "Stellaris Enchanced"}, {Title: "Assasins Creed"}, {Title: "STORY OF SEASONS: Friends of Mineral Town - Digital Edition"}})
 
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		result := filter.Filter(context.TODO(), games)
 		_ = gotolkit.ToSlice(result)
 	}
