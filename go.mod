@@ -3,20 +3,20 @@ module github.com/dominikus1993/playstation-promotion-checker-bot
 go 1.24
 
 require (
-	github.com/bwmarrin/discordgo v0.28.1
+	github.com/bwmarrin/discordgo v0.29.0
 	github.com/dominikus1993/go-toolkit v0.0.18
 	github.com/dustin/go-humanize v1.0.1
 	github.com/gocolly/colly/v2 v2.2.0
 	github.com/k0kubun/pp/v3 v3.4.1
 	github.com/lithammer/fuzzysearch v1.1.8
-	github.com/samber/lo v1.49.1
+	github.com/samber/lo v1.51.0
 	github.com/stretchr/testify v1.10.0
 	github.com/testcontainers/testcontainers-go/modules/mongodb v0.34.0
-	github.com/urfave/cli/v3 v3.1.1
-	go.mongodb.org/mongo-driver v1.17.3
+	github.com/urfave/cli/v3 v3.3.8
+	go.mongodb.org/mongo-driver v1.17.4
 	go.uber.org/automaxprocs v1.6.0
-	golang.org/x/exp v0.0.0-20250408133849-7e4ce0ab07d0
-	golang.org/x/sync v0.13.0
+	golang.org/x/exp v0.0.0-20250620022241-b7579e27df2b
+	golang.org/x/sync v0.15.0
 )
 
 require (
@@ -89,10 +89,10 @@ require (
 	go.opentelemetry.io/otel/metric v1.31.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.21.0 // indirect
 	go.opentelemetry.io/otel/trace v1.31.0 // indirect
-	golang.org/x/crypto v0.37.0 // indirect
-	golang.org/x/net v0.39.0 // indirect
-	golang.org/x/sys v0.32.0 // indirect
-	golang.org/x/text v0.24.0 // indirect
+	golang.org/x/crypto v0.39.0 // indirect
+	golang.org/x/net v0.41.0 // indirect
+	golang.org/x/sys v0.33.0 // indirect
+	golang.org/x/text v0.26.0 // indirect
 	golang.org/x/time v0.0.0-20220210224613-90d013bbcef8 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/protobuf v1.36.6 // indirect
